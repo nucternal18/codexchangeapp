@@ -1,9 +1,8 @@
 import { StyleSheet, FlatList } from "react-native";
 
-import { Text, View } from "../../components/Themed";
+import { View } from "../../components/Themed";
 import Tweet from "../../components/Tweet";
 import tweets from "../../assets/data/tweets";
-const tweet = tweets[0];
 
 export default function TabOneScreen() {
   return (
@@ -12,6 +11,7 @@ export default function TabOneScreen() {
         data={tweets}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <Tweet tweet={item} />}
+        contentContainerStyle={{ paddingRight: 15 }}
        />
     </View>
   );
