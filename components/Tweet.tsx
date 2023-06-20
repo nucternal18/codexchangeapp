@@ -1,23 +1,10 @@
 import { StyleSheet, Image } from "react-native";
 
 import { Text, View } from "./Themed";
+import { TweetType } from "../types";
 
 type TweetProps = {
-  tweet: {
-    id: string;
-    user: {
-      id: string;
-      username: string;
-      name: string;
-      image?: string;
-    };
-    createdAt: string;
-    content: string;
-    image?: string;
-    numberOfComments?: number;
-    numberOfRetweets?: number;
-    numberOfLikes?: number;
-  };
+  tweet: TweetType;
 };
 
 export default function Tweet({ tweet }: TweetProps) {
