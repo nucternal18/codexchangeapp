@@ -1,3 +1,11 @@
+export const user = {
+  id: "u1",
+  username: "aolausoro.tech",
+  name: "Woyin",
+  image:
+    "https://res.cloudinary.com/dus5nxe5w/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_rgb:262c25,e_sharpen:100,f_png,x_0/v1684008562/Screenshot_2023-05-13_at_21.06.25_aerrka.png",
+};
+
 const tweets = [
   {
     id: "t0",
