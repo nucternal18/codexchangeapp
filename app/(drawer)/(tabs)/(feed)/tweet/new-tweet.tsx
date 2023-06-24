@@ -8,8 +8,8 @@ import {
   Dimensions,
 } from "react-native";
 import React from "react";
-import { Text, View } from "../components/Themed";
-import tweets from "../assets/data/tweets";
+import { Text, View } from "../../../../../components/Themed";
+import tweets from "../../../../../assets/data/tweets";
 import { Link, useRouter } from "expo-router";
 
 const { StatusBarManager } = NativeModules;

@@ -1,12 +1,20 @@
+import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { useSearchParams } from "expo-router";
-import tweets from "../../assets/data/tweets";
+import { fetchTweet } from "../../../../../utils/fetchData";
+import { TweetType } from "../../../../../types";
 
 export default function TweetScreen() {
+  const [tweet, setTweet] = React.useState<TweetType | null>(null);
   const { id } = useSearchParams();
 
-
-  const tweet = tweets.find((tweet) => tweet.id === id);
+  React.useEffect(() => {
+    const fetchTweetData = async () => {
+      const data = await fetchTweet(id as string);
+      setTweet(data);
+    };
+    fetchTweetData();
+  }, []);
 
   if (!tweet) {
     return (

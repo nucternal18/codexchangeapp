@@ -1,12 +1,35 @@
-import { StyleSheet, FlatList, Pressable } from "react-native";
+import { StyleSheet, FlatList, Pressable, ActivityIndicator } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { Link } from "expo-router";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 
-import { View, Text } from "../../../components/Themed";
-import Tweet from "../../../components/Tweet";
-import tweets from "../../../assets/data/tweets";
+import { View, Text } from "../../../../components/Themed";
+import Tweet from "../../../../components/Tweet";
 
-export default function TabOneScreen() {
+import { TweetType } from "../../../../types";
+import { fetchTweets } from "../../../../utils/fetchData";
+
+export default function Feed() {
+  const { data: tweets, isLoading } = useQuery({
+    queryKey: ["tweets"],
+    queryFn: fetchTweets,
+  });
+  // const [tweets, setTweets] = React.useState<TweetType[] | null>([]);
+
+  // React.useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await fetchTweets();
+  //     setTweets(data);
+  //   };
+  //   fetchData();
+  // }, []);
+
+  if (isLoading) {
+    return (
+      <ActivityIndicator style={{ flex: 1 }} size="large" color="#1C9BF0" />
+    )
+  }
   return (
     <View style={styles.container}>
       <FlatList
@@ -15,7 +38,7 @@ export default function TabOneScreen() {
         renderItem={({ item }) => <Tweet tweet={item} />}
         contentContainerStyle={{ paddingRight: 15 }}
       />
-      <Link href="/new-tweet" asChild>
+      <Link href="/tweet/new-tweet" asChild>
         <Pressable style={styles.floatingButton}>
           <Entypo name="plus" size={24} color="white" />
         </Pressable>

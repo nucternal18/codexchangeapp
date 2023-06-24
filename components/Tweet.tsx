@@ -13,13 +13,13 @@ type TweetProps = {
 
 export default function Tweet({ tweet }: TweetProps) {
   return (
-    <Link href={`/tweet/${tweet.id}`} asChild>
+    <Link href={`/(feed)/tweet/${tweet.id}`} asChild>
       <Pressable style={styles.container}>
-        <Image style={styles.userImage} source={{ uri: tweet.user.image }} />
+        <Image style={styles.userImage} source={{ uri: tweet.author.image }} />
         <View style={styles.mainContainer}>
           <View style={styles.tweetHeaderContainer}>
-            <Text style={styles.name}>{tweet.user.name}</Text>
-            <Text style={styles.username}>{tweet.user.username}</Text>
+            <Text style={styles.name}>{tweet.author.name}</Text>
+            <Text style={styles.username}>{tweet.author.username}</Text>
             <Entypo
               name={"dots-three-horizontal"}
               size={16}
@@ -29,7 +29,7 @@ export default function Tweet({ tweet }: TweetProps) {
           </View>
           <Text style={styles.content}>{tweet.content}</Text>
 
-          {!!tweet.image && (
+          {(!!tweet.image && tweet.image !== null) && (
             <Image style={styles.image} source={{ uri: tweet.image }} />
           )}
           {/* Tweet Footer */}

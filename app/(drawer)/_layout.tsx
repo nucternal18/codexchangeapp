@@ -1,8 +1,5 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs, Stack } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 
-import Colors from "../../constants/Colors";
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
@@ -27,7 +24,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
 
 export default function DrawerLayout() {
   return (
-    <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
+    <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />} initialRouteName="(tabs)">
       <Drawer.Screen
         name="(tabs)"
         options={{ headerShown: false, title: "Home" }}

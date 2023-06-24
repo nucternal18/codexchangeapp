@@ -7,7 +7,7 @@ export type UserType = {
 
 export type TweetType = {
     id: string;
-    user: UserType;
+    author: UserType;
     createdAt: string;
     content: string;
     image?: string;
