@@ -1,34 +1,32 @@
-import { StyleSheet, FlatList, Pressable, ActivityIndicator } from "react-native";
+import {
+  StyleSheet,
+  FlatList,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import { View, Text } from "../../../../components/Themed";
+import { View} from "../../../../components/Themed";
 import Tweet from "../../../../components/Tweet";
 
-import { TweetType } from "../../../../types";
-import { fetchTweets } from "../../../../utils/fetchData";
+import { fetchTweets } from "../../../../lib/tweets";
+import { useAuth } from "../../../../context/auth";
 
 export default function Feed() {
+  const { token } = useAuth();
   const { data: tweets, isLoading } = useQuery({
-    queryKey: ["tweets"],
-    queryFn: fetchTweets,
+    queryKey: ["tweets", token],
+    queryFn: () => fetchTweets(token),
   });
-  // const [tweets, setTweets] = React.useState<TweetType[] | null>([]);
-
-  // React.useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = await fetchTweets();
-  //     setTweets(data);
-  //   };
-  //   fetchData();
-  // }, []);
+ 
 
   if (isLoading) {
     return (
       <ActivityIndicator style={{ flex: 1 }} size="large" color="#1C9BF0" />
-    )
+    );
   }
   return (
     <View style={styles.container}>

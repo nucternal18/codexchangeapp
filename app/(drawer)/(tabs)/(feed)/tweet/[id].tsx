@@ -1,22 +1,30 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
 import { useSearchParams } from "expo-router";
-import { fetchTweet } from "../../../../../utils/fetchData";
+import { fetchTweet } from "../../../../../lib/tweets";
 import { TweetType } from "../../../../../types";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "../../../../../context/auth";
 
 export default function TweetScreen() {
-  const [tweet, setTweet] = React.useState<TweetType | null>(null);
   const { id } = useSearchParams();
+  const { token } = useAuth();
+  const {
+    data: tweet,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["tweet", id, token],
+    queryFn: () => fetchTweet(id as string, token),
+  });
 
-  React.useEffect(() => {
-    const fetchTweetData = async () => {
-      const data = await fetchTweet(id as string);
-      setTweet(data);
-    };
-    fetchTweetData();
-  }, []);
+  if (isLoading) {
+    return (
+      <ActivityIndicator style={{ flex: 1 }} size="large" color="#1C9BF0" />
+    );
+  }
 
-  if (!tweet) {
+  if (isError) {
     return (
       <View style={styles.container}>
         <Text>Tweet not found</Text>

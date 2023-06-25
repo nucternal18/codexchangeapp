@@ -3,13 +3,14 @@ export type UserType = {
   username: string;
   name: string;
   image?: string;
+  email?: string;
 };
 
 export type TweetType = {
-    id: string;
-    author: UserType;
-    createdAt: string;
-    content: string;
+    id?: string;
+    author?: UserType;
+    createdAt?: string;
+    content?: string;
     image?: string;
     numberOfComments?: number;
     numberOfRetweets?: number;

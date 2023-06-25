@@ -27,7 +27,7 @@ export default function DrawerLayout() {
     <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />} initialRouteName="(tabs)">
       <Drawer.Screen
         name="(tabs)"
-        options={{ headerShown: false, title: "Home" }}
+        options={{ headerShown: false, title: "Feed" }}
       />
       <Drawer.Screen
         name="bookmarks"

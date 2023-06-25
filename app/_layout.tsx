@@ -9,6 +9,7 @@ import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { AuthProvider, useAuth } from "../context/auth";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -17,7 +18,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(drawer)",
+  initialRouteName: "(auth)/login",
 };
 
 const queryClient = new QueryClient();
@@ -44,19 +45,34 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const { token } = useAuth();
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <Stack initialRouteName="(drawer)">
-            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-          </Stack>
-        </ThemeProvider>
-      </QueryClientProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <Stack initialRouteName="(auth)/login" screenOptions={{ headerShown: false}}>
+              {token ? (
+                <Stack.Screen
+                  name="(auth)/login"
+                  options={{ headerShown: false }}
+                />
+              ) : (
+                <Stack.Screen
+                  name="(auth)/authenticate"
+                  options={{ headerShown: false }}
+                />
+              )}
+
+              {/* <Stack.Screen name="(drawer)" options={{ headerShown: false }} /> */}
+              <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+            </Stack>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </AuthProvider>
     </>
   );
 }

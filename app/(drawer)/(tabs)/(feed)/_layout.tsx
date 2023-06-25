@@ -6,16 +6,24 @@ import {
   Pressable,
   useColorScheme,
 } from "react-native";
+import { useQuery } from "@tanstack/react-query";
 import Colors from "../../../../constants/Colors";
-import { user } from "../../../../assets/data/tweets";
+import { useAuth } from "../../../../context/auth";
+import { fetchUser } from "../../../../lib/users";
+import { UserType } from "../../../../types";
 
-function AvatarHeader() {
+function AvatarHeader({token}: {token: string}) {
   const navigation = useNavigation();
+  const { data: user } = useQuery<UserType>({
+    queryKey: ["user", token],
+    queryFn: () => fetchUser(token),
+  })
+  
   return (
     <Pressable onPress={() => navigation.openDrawer()}>
       <Image
         style={{ width: 30, aspectRatio: 1, borderRadius: 30, marginLeft: 10 }}
-        source={{ uri: user.image }}
+        source={{ uri: user?.image }}
       />
     </Pressable>
   );
@@ -40,6 +48,7 @@ function PressableModal({ colorScheme }:{colorScheme: ColorSchemeName}) {
 
 export default function FeedLayout() {
   const colorScheme = useColorScheme();
+  const { token } = useAuth();
   return (
     <Stack  initialRouteName="index">
       <Stack.Screen
@@ -47,7 +56,7 @@ export default function FeedLayout() {
         options={{
           headerTitle: "For you",
           headerRight: () => <PressableModal colorScheme={colorScheme} />,
-          headerLeft: () => <AvatarHeader />,
+          headerLeft: () => <AvatarHeader token={token} />,
         }}
       />
       <Stack.Screen name="tweet/[id]" options={{ title: "Tweet" }} />

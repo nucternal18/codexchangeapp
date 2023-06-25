@@ -1,8 +1,19 @@
 import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
 const API_URL = "http://localhost:3002/api/v1";
 
-const fetchData = () => {
+// async function getValueFor(key: string) {
+//   let result = await SecureStore.getItemAsync(key);
+//   const token = JSON.stringify(result);
+//   if (result) {
+//     return token.replace(/\\""/g, "");
+//   } else {
+//     alert("No values stored under that key.");
+//   }
+// }
+
+const fetchData = (token: string) => {
   // create an axios instance that will be used to make requests
   const instance = axios.create({
     baseURL: API_URL,
@@ -13,10 +24,7 @@ const fetchData = () => {
 
   // Add a request interceptor
   instance.interceptors.request.use(
-    function (config) {
-      // Get the token from local storage
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbklkIjoiNjQ5NmRhYmVlZmI0MmI2MTE4YjVmOTYyIn0.yYpShAlebt0zDTy0hJ3mrApAtWRVGOLBA6u8dtz0Law";
+    async function (config) {
       config.headers["Authorization"] = `Bearer ${token}`;
 
       return config;
@@ -41,38 +49,38 @@ const fetchData = () => {
   return instance;
 };
 
-export async function fetchTweets() {
-  const response = await fetchData().get("/tweets");
+export async function fetchTweets(token: string) {
+  const response = await fetchData(token).get("/tweets");
 
   // Check if the response is successful is 404, 400, 401
   // If it is, throw an error
   // If it is not, return the data
-  if (response.status >= 400 && response.status < 500) {
+  if (response.status !== 200) {
     console.warn("Error fetching tweets");
   }
-  
+
   return response.data;
 }
 
-export async function fetchTweet(id: string) {
-  const response = await fetchData().get(`/tweets/${id}`);
+export async function fetchTweet(id: string, token: string) {
+  const response = await fetchData(token).get(`/tweets/${id}`);
   // Check if the response is successful is 404, 400, 401
   // If it is, throw an error
   // If it is not, return the data
-  if (response.status >= 400 && response.status < 500) {
+  if (response.status !== 200) {
     console.warn("Error fetching tweet");
   }
 
   return response.data;
 }
 
-export async function createTweet<T>(tweet: T) {
-  const response = await fetchData().post("/tweets", tweet);
+export async function createTweet<T>(tweet: T, token: string) {
+  const response = await fetchData(token).post("/tweets", tweet);
 
   // Check if the response is successful is 404, 400, 401
   // If it is, throw an error
   // If it is not, return the data
-  if (response.status >= 400 && response.status < 500) {
+  if (response.status !== 200) {
     console.warn("Error creating tweet");
   }
 
